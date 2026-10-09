@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Next Level Gaming & Sports Arena</title>
+
+    <style>
+        :root {
+            --ink: #f4f7fb;
+            --muted: #a9b3c2;
+            --panel: #151d2b;
+            --panel-light: #1d293a;
+            --line: #2d3a4d;
+            --accent: #55e6a5;
+            --accent-dark: #173b32;
+            --orange: #ffb45c;
+        }
+
+        * { box-sizing: border-box; }
+
+        html {
+            min-height: 100%;
+            background: #0a101a;
+        }
+
+        body {
+            margin: 0;
+            min-width: 320px;
+            min-height: 100vh;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at 10% 0%, #203a45 0, transparent 34%),
+                linear-gradient(145deg, #0a101a 0%, #101a29 54%, #111d25 100%);
+            font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+        }
+
+        button, input, select { font: inherit; }
+        button { cursor: pointer; }
+
+        .app {
+            width: min(100%, 960px);
+            min-height: 100vh;
+            margin: 0 auto;
+            padding-bottom: 86px;
+        }
+
+        header {
+            padding: 28px 24px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .brand { display: flex; align-items: center; gap: 14px; }
+
+        .logo {
+            display: grid;
+            width: 52px;
+            height: 52px;
+            place-items: center;
+            border: 1px solid rgba(85, 230, 165, 0.5);
+            border-radius: 14px;
+            background: var(--accent-dark);
+            font-size: 27px;
+        }
+
+        h1, h2, h3, h4, p { margin-top: 0; }
+
+        h1 {
+            margin-bottom: 3px;
+            color: var(--accent);
+            font-size: clamp(1.15rem, 4vw, 1.55rem);
+            letter-spacing: 0.12em;
+        }
+
+        header p, .section-title span, .hero p, .card p, .about-text { color: var(--muted); }
+        header p { margin-bottom: 0; font-size: 0.82rem; }
+        main { padding: 24px; }
+
+        .screen { display: none; animation: reveal 260ms ease-out; }
+        .screen.active { display: block; }
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 34px;
+            padding: clamp(28px, 7vw, 64px) clamp(22px, 6vw, 58px);
+            border: 1px solid #31505a;
+            border-radius: 18px;
+            background:
+                linear-gradient(110deg, rgba(13, 34, 41, 0.98), rgba(19, 29, 45, 0.86)),
+                repeating-linear-gradient(135deg, transparent 0 16px, rgba(85, 230, 165, 0.04) 16px 17px);
+        }
+
+        .hero::after {
+            position: absolute;
+            right: -55px;
+            bottom: -85px;
+            width: 220px;
+            height: 220px;
+            border: 1px solid rgba(255, 180, 92, 0.35);
+            border-radius: 50%;
+            content: "";
+        }
+
+        .badge {
+            display: inline-block;
+            margin-bottom: 18px;
+            color: var(--orange);
+            font-size: 0.72rem;
+            font-weight: bold;
+            letter-spacing: 0.14em;
+        }
+
+        .hero h2 {
+            max-width: 620px;
+            margin-bottom: 14px;
+            font-size: clamp(2rem, 7vw, 4.3rem);
+            line-height: 0.98;
+        }
+
+        .hero p { max-width: 540px; margin-bottom: 25px; line-height: 1.65; }
+
+        .btn {
+            padding: 13px 19px;
+            border: 0;
+            border-radius: 8px;
+            color: #07130f;
+            background: var(--accent);
+            font-weight: bold;
+            transition: transform 160ms ease, background 160ms ease;
+        }
+
+        .btn:hover { background: #83f3c2; transform: translateY(-2px); }
+
+        .section-title {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 16px;
+            margin: 28px 0 14px;
+        }
+
+        .section-title h3 { margin-bottom: 0; font-size: 1.2rem; }
+        .section-title span { font-size: 0.8rem; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .card {
+            padding: 22px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: rgba(21, 29, 43, 0.9);
+        }
+
+        .grid .card { min-height: 190px; }
+        .icon { margin-bottom: 17px; font-size: 1.7rem; }
+        .card h4 { margin-bottom: 8px; font-size: 1.05rem; }
+        .card p { margin-bottom: 18px; font-size: 0.9rem; line-height: 1.5; }
+        .price { color: var(--accent); font-weight: bold; }
+        .list-card { margin-bottom: 10px; }
+
+        .row { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; }
+        .row small { color: var(--muted); }
+        hr { border: 0; border-top: 1px solid var(--line); }
+
+        label { display: block; margin: 17px 0 7px; color: var(--muted); font-size: 0.84rem; }
+
+        input, select {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid var(--line);
+            border-radius: 7px;
+            outline: 0;
+            color: var(--ink);
+            background: #0d1522;
+        }
+
+        input:focus, select:focus { border-color: var(--accent); }
+
+        .total {
+            margin: 24px 0 18px;
+            padding: 18px;
+            border-left: 3px solid var(--accent);
+            background: var(--accent-dark);
+        }
+
+        .amount { margin: 5px 0; color: var(--accent); font-size: 1.75rem; font-weight: bold; }
+        .discount, .notice { color: var(--muted); font-size: 0.82rem; }
+        .notice { display: none; margin-top: 14px; color: #ffb8a9; }
+        .success { margin-top: 34px; text-align: center; }
+        .check { margin-bottom: 14px; font-size: 3rem; }
+
+        .bottom-nav {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+            border-top: 1px solid var(--line);
+            background: rgba(10, 16, 26, 0.94);
+            backdrop-filter: blur(12px);
+        }
+
+        .bottom-nav button {
+            min-width: 90px;
+            padding: 8px 14px;
+            border: 0;
+            border-radius: 7px;
+            color: var(--muted);
+            background: transparent;
+        }
+
+        .bottom-nav button span { display: block; margin-bottom: 2px; font-size: 1.15rem; }
+        .bottom-nav button.active, .bottom-nav button:hover { color: var(--accent); background: var(--accent-dark); }
+
+        @keyframes reveal {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 560px) {
+            main { padding: 18px 14px; }
+            header { padding: 22px 14px 16px; }
+            .grid { grid-template-columns: 1fr; }
+            .grid .card { min-height: 0; }
+            .section-title { align-items: start; flex-direction: column; gap: 5px; }
+        }
+
+        /* Arena refresh */
+        :root {
+            --accent: #b5ff4d;
+            --accent-dark: #263719;
+            --orange: #ffbd69;
+            --line: rgba(169, 192, 220, 0.15);
+        }
+
+        html { background: #080d14; }
+        body {
+            background:
+                radial-gradient(ellipse at 85% 5%, rgba(52, 96, 48, 0.28), transparent 32%),
+                radial-gradient(ellipse at 8% 20%, rgba(27, 72, 94, 0.25), transparent 30%),
+                #080d14;
+            font-family: Inter, "Segoe UI", sans-serif;
+        }
+        .app { width: min(100%, 1160px); padding-bottom: 104px; }
+        header { padding: 26px 32px 22px; border-color: var(--line); }
+        .logo {
+            width: 56px; height: 56px; border-radius: 17px;
+            background: linear-gradient(145deg, #2b431d, #15231a);
+            box-shadow: 0 0 32px rgba(181, 255, 77, 0.12);
+        }
+        h1 { color: var(--ink); font-size: 1.05rem; letter-spacing: 0.19em; }
+        header p { letter-spacing: 0.02em; }
+        main { padding: 30px 32px; }
+        .hero {
+            margin-bottom: 38px; padding: clamp(34px, 7vw, 76px);
+            border-color: rgba(181, 255, 77, 0.2); border-radius: 24px;
+            background:
+                radial-gradient(ellipse at 86% 50%, rgba(181,255,77,.15), transparent 35%),
+                linear-gradient(115deg, rgba(20, 34, 35, .98), rgba(15, 25, 37, .94));
+            box-shadow: 0 24px 80px rgba(0,0,0,.24);
+        }
+        .hero::after { right: 8%; bottom: -145px; width: 330px; height: 330px; border-color: rgba(181,255,77,.22); }
+        .badge { padding: 8px 11px; border: 1px solid rgba(255,189,105,.2); border-radius: 99px; background: rgba(255,189,105,.07); }
+        .hero h2 { max-width: 700px; letter-spacing: -.055em; }
+        .hero p { max-width: 580px; }
+        .btn { border-radius: 9px; box-shadow: 0 8px 24px rgba(181,255,77,.12); }
+        .section-title { margin-top: 36px; }
+        .section-title h3 { letter-spacing: -.02em; }
+        .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+        .card {
+            border-color: var(--line); border-radius: 16px;
+            background: linear-gradient(145deg, rgba(22,32,47,.96), rgba(15,23,35,.96));
+            box-shadow: 0 12px 35px rgba(0,0,0,.12);
+            transition: transform 180ms ease, border-color 180ms ease;
+        }
+        .grid .card:hover { transform: translateY(-4px); border-color: rgba(181,255,77,.34); }
+        .icon { display: grid; width: 48px; height: 48px; place-items: center; border-radius: 14px; background: rgba(181,255,77,.08); }
+        .price { letter-spacing: .01em; }
+        .total { border-radius: 0 12px 12px 0; }
+        .bottom-nav { border-color: var(--line); background: rgba(8,13,20,.88); }
+        .bottom-nav button { min-width: 104px; border-radius: 10px; }
+        .about-text { line-height: 1.75; }
+        .event-card { position: relative; }
+        .event-meta { color: var(--muted); font-size: .82rem; line-height: 1.7; }
+        .event-tag { display: inline-block; margin-bottom: 12px; color: var(--accent); font-size: .7rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+        @media (min-width: 900px) {
+            .app { padding-bottom: 110px; }
+            .bottom-nav { bottom: 20px; left: 50%; width: max-content; transform: translateX(-50%); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 12px 36px rgba(0,0,0,.4); }
+        }
+        @media (max-width: 700px) {
+            header { padding: 20px 18px; }
+            main { padding: 22px 18px; }
+            .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (max-width: 560px) {
+            .grid { grid-template-columns: 1fr; }
+            .hero { border-radius: 18px; }
+        }
+        .bottom-nav {
+            justify-content: flex-start;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-dark) transparent;
+        }
+        .bottom-nav button { flex: 0 0 auto; min-width: 82px; font-size: .75rem; }
+        .screen[aria-hidden="true"] { display: none; }
+        .screen[aria-hidden="false"] { display: block; }
+        .screen-link { min-height: 42px; }
+        .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 18px; }
+        .chip, .outline-btn {
+            padding: 9px 13px; border: 1px solid var(--line); border-radius: 999px;
+            color: var(--ink); background: var(--panel); cursor: pointer;
+        }
+        .chip.active, .outline-btn:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-dark); }
+        .status-line { min-height: 1.4em; margin-top: 12px; color: var(--accent); font-size: .88rem; }
+        .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+        .stat { padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.025); }
+        .stat strong { display: block; color: var(--accent); font-size: 1.45rem; }
+        .stat small { color: var(--muted); }
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+        th { color: var(--muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; }
+        .plan-card.selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+        .feed-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+        .feed-item:last-child { border-bottom: 0; }
+        .feed-item small { display: block; margin-top: 6px; color: var(--muted); }
+        @media (min-width: 900px) {
+            .bottom-nav { width: min(calc(100% - 32px), 1160px); justify-content: center; }
+            .bottom-nav button { min-width: 75px; padding: 8px 10px; }
+        }
+        @media (max-width: 560px) {
+            .stat-row { grid-template-columns: 1fr; }
+            .bottom-nav { gap: 2px; padding-right: 8px; padding-left: 8px; }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- HEADER -->
+
+    <header>
+        <div class="brand">
+
+            <div class="logo">
+                🎮
+            </div>
+
+            <div>
+                <h1>NEXT LEVEL</h1>
+                <p>Gaming, esports & indoor sports • Johannesburg</p>
+            </div>
+
+        </div>
+    </header>
+
+
+    <main>
+
+        <!-- HOME SCREEN -->
+
+        <section id="home" class="screen active">
+
+            <div class="hero">
+
+                <span class="badge">
+                    EST. 2023 • JOHANNESBURG • OPEN DAILY
+                </span>
+
+                <h2>
+                    Play. Compete. Level Up.
+                </h2>
+
+                <p>
+                    Your all-in-one arena for next-gen gaming, esports tournaments and high-energy indoor sports. Bring your crew, find your game and make it a day.
+                </p>
+
+                <button
+                    class="btn"
+                    onclick="showScreen('book')">
+
+                    Book an Experience →
+
+                </button>
+
+            </div>
+
+
+            <!-- PACKAGES -->
+
+            <div class="section-title">
+                <h3>Featured Experiences</h3>
+                <span>Choose your challenge</span>
+            </div>
+
+            <div class="grid">
+
+                <div class="card">
+
+                    <div class="icon">🏆</div>
+
+                    <h4>
+                        Ultimate Gamer Pass
+                    </h4>
+
+                    <p>
+                        Full gaming access and
+                        competitive challenges.
+                    </p>
+
+                    <div class="price">
+                        From R1,200
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="icon">👑</div>
+
+                    <h4>
+                        VIP Gaming Experience
+                    </h4>
+
+                    <p>
+                        Premium gaming session
+                        with priority access.
+                    </p>
+
+                    <div class="price">
+                        From R1,800
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="icon">⚔️</div>
+
+                    <h4>
+                        Esports Training
+                    </h4>
+
+                    <p>
+                        Focused training for
+                        competitive gamers.
+                    </p>
+
+                    <div class="price">
+                        From R1,500
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="icon">🎂</div>
+
+                    <h4>
+                        Birthday Party
+                    </h4>
+
+                    <p>
+                        Gaming, multiplayer
+                        competitions and catering.
+                    </p>
+
+                    <div class="price">
+                        From R2,500
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- INDIVIDUAL EXPERIENCES -->
+
+            <div class="section-title">
+
+                <h3>Sports & Solo Experiences</h3>
+
+                <span>VR, racing, courts & more</span>
+
+            </div>
+
+
+            <div class="grid">
+
+                <div class="card">
+
+                    <div class="icon">🥽</div>
+
+                    <h4>
+                        Virtual Reality
+                    </h4>
+
+                    <p>
+                        VR headset, game choice
+                        and staff assistance.
+                    </p>
+
+                    <div class="price">
+                        R750
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="icon">🏎️</div>
+
+                    <h4>
+                        Racing Simulator
+                    </h4>
+
+                    <p>
+                        Race on professional
+                        driving simulators.
+                    </p>
+
+                    <div class="price">
+                        R750
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="icon">🔐</div>
+
+                    <h4>
+                        Escape Room
+                    </h4>
+
+                    <p>
+                        Team-based puzzle
+                        and escape challenge.
+                    </p>
+
+                    <div class="price">
+                        R750
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <div class="icon">⚽</div>
+
+                    <h4>5-a-Side Football</h4>
+
+                    <p>Book the indoor pitch for a fast, friendly match with your squad.</p>
+
+                    <div class="price">R1,200 / hour</div>
+
+                </div>
+
+                <div class="card">
+
+                    <div class="icon">🏀</div>
+
+                    <h4>Half-Court Hoops</h4>
+
+                    <p>Get shots up, run a pickup game or host your own mini challenge.</p>
+
+                    <div class="price">R900 / hour</div>
+
+                </div>
+
+                <div class="card">
+
+                    <div class="icon">🎾</div>
+
+                    <h4>Padel Court</h4>
+
+                    <p>Grab a partner and book a court for the fastest-growing racket sport.</p>
+
+                    <div class="price">R1,000 / hour</div>
+
+                </div>
+
+            </div>
+
+            <div class="section-title">
+                <h3>Coming Up at the Arena</h3>
+                <span>Make your next game day count</span>
+            </div>
+
+            <div class="grid">
+                <div class="card event-card">
+                    <span class="event-tag">Esports · Saturday</span>
+                    <h4>Weekend Gaming Showdown</h4>
+                    <p>Squad up for a full day of bracket play, casual matches and prizes.</p>
+                    <div class="event-meta">🎮 All skill levels welcome<br>🏆 Tournament entry from R150</div>
+                </div>
+                <div class="card event-card">
+                    <span class="event-tag">Indoor sport · Sunday</span>
+                    <h4>Five-a-Side League Night</h4>
+                    <p>Bring a team or join the free-agent list for weekly league fixtures.</p>
+                    <div class="event-meta">⚽ Kick-off from 16:00<br>👥 Teams of 5–8 players</div>
+                </div>
+                <div class="card event-card">
+                    <span class="event-tag">Community · All week</span>
+                    <h4>Open Play Sessions</h4>
+                    <p>Drop in, meet local players and try out the arena's gaming and sports zones.</p>
+                    <div class="event-meta">📍 Johannesburg<br>✨ New players always welcome</div>
+                </div>
+            </div>
+
+
+            <!-- DISCOUNTS -->
+
+            <div class="section-title">
+                <h3>Booking Discounts</h3>
+            </div>
+
+            <div class="card list-card">
+
+                <div class="row">
+                    <strong>1 booking</strong>
+                    <small>No discount</small>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <strong>2 bookings</strong>
+                    <small>5% off</small>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <strong>3 bookings</strong>
+                    <small>10% off</small>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <strong>4+ bookings</strong>
+                    <small>15% off</small>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- GAMES SCREEN -->
+        <section id="games" class="screen" aria-hidden="true">
+            <div class="section-title"><h3>Game Library</h3><span>Find your next match</span></div>
+            <label for="game-search">Search games</label>
+            <input id="game-search" type="search" placeholder="Try racing, football, fighter…" oninput="filterGames()">
+            <div class="chip-row" aria-label="Filter games">
+                <button class="chip active" data-game-filter="all" onclick="setGameFilter('all', this)">All</button>
+                <button class="chip" data-game-filter="sports" onclick="setGameFilter('sports', this)">Sports</button>
+                <button class="chip" data-game-filter="racing" onclick="setGameFilter('racing', this)">Racing</button>
+                <button class="chip" data-game-filter="party" onclick="setGameFilter('party', this)">Party</button>
+            </div>
+            <div class="grid" id="game-grid">
+                <article class="card" data-category="sports" data-search="football fc soccer sports"><div class="icon">⚽</div><h4>EA Sports FC</h4><p>Settle the derby on the big screen.</p><button class="outline-btn" onclick="bookExperience('gamer-pass')">Play from R1,200</button></article>
+                <article class="card" data-category="racing" data-search="racing forza cars simulator"><div class="icon">🏎️</div><h4>Forza Motorsport</h4><p>Race wheel-to-wheel on our simulator rigs.</p><button class="outline-btn" onclick="bookExperience('racing-simulator')">Book a rig</button></article>
+                <article class="card" data-category="party" data-search="party family mario kart fun"><div class="icon">🍄</div><h4>Party Play</h4><p>Fast rounds, big laughs and room for everyone.</p><button class="outline-btn" onclick="showScreen('parties')">Explore party packs</button></article>
+                <article class="card" data-category="sports" data-search="basketball hoops nba sports"><div class="icon">🏀</div><h4>Hoops Challenge</h4><p>Take on a friend in a head-to-head shootout.</p><button class="outline-btn" onclick="showScreen('sports')">See sports zones</button></article>
+                <article class="card" data-category="party" data-search="fighting tournament versus combat"><div class="icon">🥊</div><h4>Versus Arena</h4><p>Pick a fighter, call your shot and play best of three.</p><button class="outline-btn" onclick="showScreen('tournaments')">Find a bracket</button></article>
+                <article class="card" data-category="racing" data-search="vr virtual reality adventure"><div class="icon">🥽</div><h4>VR Worlds</h4><p>Step inside immersive worlds with staff support.</p><button class="outline-btn" onclick="bookExperience('vr')">Book VR</button></article>
+            </div>
+            <p class="status-line" id="game-empty" hidden>No games match that search. Try another title.</p>
+        </section>
+
+        <!-- SPORTS SCREEN -->
+        <section id="sports" class="screen" aria-hidden="true">
+            <div class="section-title"><h3>Indoor Sports Zones</h3><span>Reserve your court or pitch</span></div>
+            <div class="grid">
+                <article class="card"><div class="icon">⚽</div><h4>5-a-Side Football</h4><p>Indoor pitch, quick substitutions and great team energy.</p><div class="price">R1,200 / hour</div><p><button class="btn" onclick="bookExperience('football')">Book the pitch</button></p></article>
+                <article class="card"><div class="icon">🏀</div><h4>Half-Court Hoops</h4><p>Pickup games, shooting challenges and friendly one-on-ones.</p><div class="price">R900 / hour</div><p><button class="btn" onclick="bookExperience('basketball')">Book the court</button></p></article>
+                <article class="card"><div class="icon">🎾</div><h4>Padel Court</h4><p>Bring a partner and try the social racket sport everyone is talking about.</p><div class="price">R1,000 / hour</div><p><button class="btn" onclick="bookExperience('padel')">Book padel</button></p></article>
+            </div>
+            <div class="card" style="margin-top:16px"><h4>Sports desk</h4><p>Bookings are requests only in this demo. Pick a date in the booking screen and the team can confirm availability.</p><button class="outline-btn" onclick="showScreen('events')">View sports events</button></div>
+        </section>
+
+        <!-- TOURNAMENTS SCREEN -->
+        <section id="tournaments" class="screen" aria-hidden="true">
+            <div class="section-title"><h3>Tournaments</h3><span>Enter a bracket and play for glory</span></div>
+            <div class="grid">
+                <article class="card"><span class="event-tag">Esports · Saturday</span><h4>Weekend Gaming Showdown</h4><p>Open bracket, casual side-games and arena prizes.</p><div class="event-meta">Entry R150 · All skill levels</div><button class="outline-btn" data-signup="showdown" onclick="toggleSignup('showdown', this)">Join tournament</button></article>
+                <article class="card"><span class="event-tag">Sports · Sunday</span><h4>Five-a-Side League</h4><p>Bring a full squad or sign up as a free agent.</p><div class="event-meta">Teams of 5–8 · Kick-off 16:00</div><button class="outline-btn" data-signup="five-a-side" onclick="toggleSignup('five-a-side', this)">Join league</button></article>
+                <article class="card"><span class="event-tag">Racing · Monthly</span><h4>Lap Time Challenge</h4><p>Set a qualifying time on the sim and climb the weekly board.</p><div class="event-meta">Racing rig · Walk-ins welcome</div><button class="outline-btn" data-signup="lap-time" onclick="toggleSignup('lap-time', this)">Enter challenge</button></article>
+            </div>
+            <p class="status-line" id="tournament-status" aria-live="polite"></p>
+        </section>
+
+        <!-- EVENTS SCREEN -->
+        <section id="events" class="screen" aria-hidden="true">
+            <div class="section-title"><h3>Arena Events</h3><span>Meet your next teammates</span></div>
+            <div class="grid">
+                <article class="card"><span class="event-tag">Saturday · Gaming</span><h4>Community Game Day</h4><p>Drop-in multiplayer, mini brackets and new-player welcome sessions.</p><button class="outline-btn" data-signup="game-day" onclick="toggleSignup('game-day', this)">I'm interested</button></article>
+                <article class="card"><span class="event-tag">Sunday · Football</span><h4>League Night</h4><p>Weekly fixtures, free-agent teams and sideline snacks.</p><button class="outline-btn" data-signup="league-night" onclick="toggleSignup('league-night', this)">I'm interested</button></article>
+                <article class="card"><span class="event-tag">All week · Open play</span><h4>Try the Arena</h4><p>Explore gaming stations, VR and indoor sports with your crew.</p><button class="outline-btn" onclick="showScreen('book')">Plan a visit</button></article>
+            </div>
+            <p class="status-line" id="event-status" aria-live="polite"></p>
+        </section>
+
+
+        <!-- BOOKING SCREEN -->
+
+        <section id="book" class="screen">
+
+            <div class="section-title">
+
+                <h3>
+                    Make a Booking
+                </h3>
+
+                <span>
+                    Get your quotation
+                </span>
+
+            </div>
+
+
+            <div class="card">
+
+                <label for="name">
+                    Customer Name
+                </label>
+
+                <input
+                    id="name"
+                    type="text"
+                    placeholder="Enter your name"
+                    autocomplete="name"
+                >
+
+
+                <label for="email">
+                    Email Address
+                </label>
+
+                <input
+                    id="email"
+                    type="email"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                >
+
+
+                <label for="experience">
+                    Choose an Experience
+                </label>
+
+                <select id="experience">
+
+                    <option value="gamer-pass" data-price="1200">
+                        Ultimate Gamer Pass — R1,200
+                    </option>
+
+                    <option value="vip" data-price="1800">
+                        VIP Gaming Experience — R1,800
+                    </option>
+
+                    <option value="esports-training" data-price="1500">
+                        Esports Training — R1,500
+                    </option>
+
+                    <option value="birthday" data-price="2500">
+                        Birthday Party — R2,500
+                    </option>
+
+                    <option value="vr" data-price="750">
+                        Virtual Reality — R750
+                    </option>
+
+                    <option value="racing-simulator" data-price="750">
+                        Racing Simulator — R750
+                    </option>
+
+                    <option value="escape-room" data-price="750">
+                        Escape Room — R750
+                    </option>
+
+                    <option value="football" data-price="1200">
+                        5-a-Side Football — R1,200 / hour
+                    </option>
+
+                    <option value="basketball" data-price="900">
+                        Half-Court Hoops — R900 / hour
+                    </option>
+
+                    <option value="padel" data-price="1000">
+                        Padel Court — R1,000 / hour
+                    </option>
+
+                </select>
+
+
+                <label for="qty">
+                    Number of Bookings
+                </label>
+
+                <input
+                    id="qty"
+                    type="number"
+                    min="1"
+                    max="20"
+                    value="1"
+                    oninput="calculate()"
+                >
+
+
+                <label for="date">
+                    Preferred Date
+                </label>
+
+                <input
+                    id="date"
+                    type="date"
+                >
+
+
+                <label for="request">
+                    Special Request
+                </label>
+
+                <input
+                    id="request"
+                    type="text"
+                    placeholder="Optional"
+                >
+
+
+                <!-- QUOTATION -->
+
+                <div class="total">
+
+                    <div>
+                        Estimated Quotation
+                    </div>
+
+                    <div
+                        class="amount"
+                        id="total">
+
+                        R1,200.00
+
+                    </div>
+
+                    <div
+                        class="discount"
+                        id="discount">
+
+                        No discount applied
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="btn"
+                    onclick="submitBooking()">
+
+                    Request Booking
+
+                </button>
+
+
+                <div
+                    class="notice"
+                    id="notice">
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- LEADERBOARD SCREEN -->
+        <section id="leaderboard" class="screen" aria-hidden="true">
+            <div class="section-title"><h3>Leaderboard</h3><span>Local season standings</span></div>
+            <div class="chip-row"><button class="chip active" onclick="setLeaderboard('gaming', this)">Gaming</button><button class="chip" onclick="setLeaderboard('sports', this)">Sports</button></div>
+            <div class="stat-row"><div class="stat"><strong id="leader-count">248</strong><small>players ranked</small></div><div class="stat"><strong id="leader-top">1,840</strong><small>top points</small></div><div class="stat"><strong>Season 04</strong><small>current season</small></div></div>
+            <div class="card table-wrap"><table><thead><tr><th>Rank</th><th>Player</th><th>Club</th><th>Points</th></tr></thead><tbody id="leader-rows"></tbody></table></div>
+        </section>
+
+        <!-- MEMBERSHIP SCREEN -->
+        <section id="membership" class="screen" aria-hidden="true">
+            <div class="section-title"><h3>Arena Membership</h3><span>Pick your level</span></div>
+            <div class="grid">
+                <article class="card plan-card" data-plan="rookie"><div class="icon">🎮</div><h4>Rookie</h4><p>Member pricing on weekday play and community event access.</p><div class="price">Free</div><p><button class="outline-btn" onclick="choosePlan('rookie', this)">Choose Rookie</button></p></article>
+                <article class="card plan-card" data-plan="pro"><div class="icon">⚡</div><h4>Pro</h4><p>Priority tournament entry and 10% off eligible sessions.</p><div class="price">R199 / month</div><p><button class="outline-btn" onclick="choosePlan('pro', this)">Choose Pro</button></p></article>
+                <article class="card plan-card" data-plan="elite"><div class="icon">👑</div><h4>Elite</h4><p>VIP access, guest passes and 15% off eligible sessions.</p><div class="price">R399 / month</div><p><button class="outline-btn" onclick="choosePlan('elite', this)">Choose Elite</button></p></article>
+            </div>
+            <p class="status-line" id="plan-status" aria-live="polite">Membership selection is saved on this device.</p>
+        </section>
+
+        <!-- PARTIES SCREEN -->
+        <section id="parties" class="screen" aria-hidden="true">
+            <div class="section-title"><h3>Parties & Group Days</h3><span>Big energy, easy planning</span></div>
+            <div class="grid">
+                <article class="card"><div class="icon">🎂</div><h4>Level Up Party</h4><p>Gaming stations, party host and multiplayer challenges.</p><div class="price">From R2,500</div><button class="btn" onclick="bookExperience('birthday')">Get party quote</button></article>
+                <article class="card"><div class="icon">🏫</div><h4>School Outing</h4><p>Supervised games and sports activities for a full class group.</p><div class="price">Custom quote</div><button class="outline-btn" onclick="showScreen('book')">Plan a school visit</button></article>
+                <article class="card"><div class="icon">🤝</div><h4>Team Building</h4><p>Mix esports, racing and court challenges for your team.</p><div class="price">Custom quote</div><button class="outline-btn" onclick="showScreen('book')">Plan a team day</button></article>
+            </div>
+        </section>
+
+        <!-- COMMUNITY SCREEN -->
+        <section id="community" class="screen" aria-hidden="true">
+            <div class="section-title"><h3>Community Hub</h3><span>Stay in the loop and meet your crew</span></div>
+            <div class="card">
+                <h4>Arena updates</h4>
+                <form id="community-form" onsubmit="postCommunityUpdate(event)">
+                    <label for="community-name">Your name</label><input id="community-name" required maxlength="30" placeholder="Player name">
+                    <label for="community-message">Share a message</label><input id="community-message" required maxlength="180" placeholder="Looking for a padel partner…">
+                    <button class="btn" type="submit" style="margin-top:14px">Post to this device</button>
+                </form>
+                <p class="discount" style="margin-top:12px">Posts are stored locally in this browser demo.</p>
+                <div id="community-feed" aria-live="polite"></div>
+            </div>
+            <div class="card" style="margin-top:16px"><h4>Find your people</h4><p>Join game nights, enter a tournament or meet a team at an open-play session.</p><button class="outline-btn" onclick="showScreen('tournaments')">Browse tournaments</button></div>
+        </section>
+
+        <!-- ABOUT SCREEN -->
+
+        <section id="about" class="screen">
+
+            <div class="section-title">
+
+                <h3>
+                    About Next Level
+                </h3>
+
+            </div>
+
+
+            <div class="card">
+
+                <h4>
+
+                    Where gamers connect.
+
+                </h4>
+
+
+                <p class="about-text">
+
+                        Next Level Gaming & Sports Arena
+                    is a Johannesburg-based gaming and indoor sports venue
+                    established in 2023.
+
+                    It brings modern gaming, esports and indoor sports together for casual players, competitive teams, schools, clubs and businesses.
+
+                </p>
+
+
+                <div class="section-title">
+
+                    <h3>
+                        We Host
+                    </h3>
+
+                </div>
+
+
+                <p>
+
+                    🎮 Gaming Events
+                    <br>
+
+                    🏆 Esports Tournaments
+                    <br>
+
+                    ⚽ Indoor Sports & Court Bookings
+                    <br>
+
+                    🎂 Birthday Parties
+                    <br>
+
+                    🏫 School Outings
+                    <br>
+
+                    💼 Corporate Team-Building
+
+                </p>
+
+
+                <button
+                    class="btn"
+                    onclick="showScreen('book')">
+
+                    Get a Quotation
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- SUCCESS SCREEN -->
+
+        <section id="success" class="screen">
+
+            <div class="card success">
+
+                <div class="check">
+                    ✅
+                </div>
+
+                <h2>
+                    Booking Request Sent
+                </h2>
+
+                <p>
+
+                    Thank you!
+
+                    Your booking request has been saved in this browser.
+
+                    This demo does not send requests to a live booking service.
+
+                </p>
+
+
+                <button
+                    class="btn"
+                    onclick="showScreen('home')">
+
+                    Back to Home
+
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- BOTTOM NAVIGATION -->
+
+    <nav class="bottom-nav">
+        <button class="active" data-screen="home" aria-current="page" onclick="showScreen('home', this)"><span>⌂</span>Home</button>
+        <button data-screen="games" onclick="showScreen('games', this)"><span>🎮</span>Games</button>
+        <button data-screen="sports" onclick="showScreen('sports', this)"><span>⚽</span>Sports</button>
+        <button data-screen="tournaments" onclick="showScreen('tournaments', this)"><span>🏆</span>Tournaments</button>
+        <button data-screen="events" onclick="showScreen('events', this)"><span>📣</span>Events</button>
+        <button data-screen="book" onclick="showScreen('book', this)"><span>📅</span>Book</button>
+        <button data-screen="leaderboard" onclick="showScreen('leaderboard', this)"><span>📊</span>Scores</button>
+        <button data-screen="membership" onclick="showScreen('membership', this)"><span>⭐</span>Members</button>
+        <button data-screen="parties" onclick="showScreen('parties', this)"><span>🎉</span>Parties</button>
+        <button data-screen="community" onclick="showScreen('community', this)"><span>💬</span>Community</button>
+        <button data-screen="about" onclick="showScreen('about', this)"><span>ℹ️</span>About</button>
+        <button data-screen="success" onclick="showScreen('success', this)"><span>✅</span>Status</button>
+
+    </nav>
+
+</div>
+
+
+<script>
+
+    /* ==========================
+       MONEY FORMAT
+    ========================== */
+
+    function money(number) {
+
+        return "R" +
+            Number(number).toLocaleString(
+                "en-ZA",
+                {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }
+            );
+
+    }
+
+
+    /* ==========================
+       DISCOUNT CALCULATION
+    ========================== */
+
+    function discountRate(quantity) {
+
+        if (quantity >= 4) {
+
+            return 0.15;
+
+        }
+
+        if (quantity === 3) {
+
+            return 0.10;
+
+        }
+
+        if (quantity === 2) {
+
+            return 0.05;
+
+        }
+
+        return 0;
+
+    }
+
+
+    /* ==========================
+       CALCULATE QUOTATION
+    ========================== */
+
+    function calculate() {
+
+        const experienceSelect = document.getElementById("experience");
+        const price = Number(experienceSelect.selectedOptions[0].dataset.price);
+
+
+        const quantityInput = document.getElementById("qty");
+        const quantity =
+            Math.max(
+                1,
+                Math.min(20, Number(
+                    quantityInput.value || 1
+                ))
+            );
+        quantityInput.value = quantity;
+
+
+        const rate =
+            discountRate(quantity);
+
+
+        const subtotal =
+            price * quantity;
+
+
+        const total =
+            subtotal * (1 - rate);
+
+
+        document.getElementById(
+            "total"
+        ).textContent = money(total);
+
+
+        if (rate > 0) {
+
+            document.getElementById(
+                "discount"
+            ).textContent =
+
+                `${Math.round(rate * 100)}% discount applied • ` +
+                `You save ${money(subtotal - total)}`;
+
+        } else {
+
+            document.getElementById(
+                "discount"
+            ).textContent =
+                "No discount applied";
+
+        }
+
+    }
+
+
+    /* ==========================
+       EXPERIENCE CHANGE
+    ========================== */
+
+    document
+        .getElementById("experience")
+        .addEventListener(
+            "change",
+            calculate
+        );
+
+
+    /* ==========================
+       SCREEN NAVIGATION
+    ========================== */
+
+    function showScreen(id, button, fromHistory = false) {
+
+        document
+            .querySelectorAll(".screen")
+            .forEach(
+                screen => {
+                    const isActive = screen.id === id;
+                    screen.classList.toggle("active", isActive);
+                    screen.setAttribute("aria-hidden", String(!isActive));
+                }
+            );
+
+
+        const activeScreen = document.getElementById(id);
+        if (!activeScreen) return;
+        document.title = `${activeScreen.dataset.title || activeScreen.querySelector("h2, h3")?.textContent.trim() || "Arena"} · Next Level`;
+        if (!fromHistory && location.hash !== `#${id}`) history.pushState({ screen: id }, "", `#${id}`);
+
+
+        document.querySelectorAll(".bottom-nav button").forEach(navButton => {
+            const isActive = navButton.dataset.screen === id;
+            navButton.classList.toggle("active", isActive);
+            if (isActive) navButton.setAttribute("aria-current", "page");
+            else navButton.removeAttribute("aria-current");
+        });
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+
+    /* ==========================
+       INTERACTIVE SCREENS
+    ========================== */
+
+    function readLocal(key, fallback) {
+        try {
+            const value = localStorage.getItem(key);
+            return value ? JSON.parse(value) : fallback;
+        } catch {
+            return fallback;
+        }
+    }
+
+    function writeLocal(key, value) {
+        try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* Storage may be unavailable. */ }
+    }
+
+    function bookExperience(value) {
+        showScreen("book");
+        document.getElementById("experience").value = value;
+        calculate();
+    }
+
+    let activeGameFilter = "all";
+
+    function setGameFilter(filter, button) {
+        activeGameFilter = filter;
+        document.querySelectorAll("[data-game-filter]").forEach(chip => chip.classList.toggle("active", chip === button));
+        filterGames();
+    }
+
+    function filterGames() {
+        const query = document.getElementById("game-search").value.trim().toLowerCase();
+        let shown = 0;
+        document.querySelectorAll("#game-grid [data-category]").forEach(card => {
+            const matchesCategory = activeGameFilter === "all" || card.dataset.category === activeGameFilter;
+            const matchesText = `${card.dataset.search} ${card.innerText}`.toLowerCase().includes(query);
+            card.hidden = !(matchesCategory && matchesText);
+            if (!card.hidden) shown += 1;
+        });
+        document.getElementById("game-empty").hidden = shown > 0;
+    }
+
+    function toggleSignup(key, button) {
+        const signups = readLocal("nextLevelSignups", []);
+        const exists = signups.includes(key);
+        const updated = exists ? signups.filter(item => item !== key) : [...signups, key];
+        writeLocal("nextLevelSignups", updated);
+        const joined = !exists;
+        button.textContent = joined ? "Joined ✓ · Undo" : (key.includes("showdown") ? "Join tournament" : key.includes("five-a-side") ? "Join league" : key.includes("lap-time") ? "Enter challenge" : "I'm interested");
+        button.setAttribute("aria-pressed", String(joined));
+        const status = document.getElementById(key.includes("showdown") || key.includes("five-a-side") || key.includes("lap-time") ? "tournament-status" : "event-status");
+        status.textContent = joined ? "You're on the local interest list. Your selection is saved on this device." : "You're no longer on this local interest list.";
+    }
+
+    const leaderboardData = {
+        gaming: [
+            [1, "PixelPilot", "Joystick Crew", "1,840"],
+            [2, "NovaRush", "Night Owls", "1,720"],
+            [3, "MakoGG", "Joystick Crew", "1,610"],
+            [4, "ArcadeAce", "Solo Queue", "1,480"],
+            [5, "GG_Kay", "Night Owls", "1,390"]
+        ],
+        sports: [
+            [1, "MakoGG", "Court Kings", "2,040"],
+            [2, "GG_Kay", "Five Alive", "1,880"],
+            [3, "NovaRush", "Court Kings", "1,760"],
+            [4, "PixelPilot", "Five Alive", "1,620"],
+            [5, "ArcadeAce", "Free Agents", "1,510"]
+        ]
+    };
+
+    function setLeaderboard(category, button) {
+        document.querySelectorAll("#leaderboard .chip").forEach(chip => chip.classList.toggle("active", chip === button));
+        const rows = leaderboardData[category];
+        document.getElementById("leader-rows").innerHTML = rows.map(row => `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td><strong>${row[3]}</strong></td></tr>`).join("");
+        document.getElementById("leader-top").textContent = rows[0][3];
+        document.getElementById("leader-count").textContent = category === "gaming" ? "248" : "96";
+    }
+
+    function choosePlan(plan, button) {
+        writeLocal("nextLevelMembership", plan);
+        document.querySelectorAll(".plan-card").forEach(card => card.classList.toggle("selected", card.dataset.plan === plan));
+        document.getElementById("plan-status").textContent = `${plan[0].toUpperCase()}${plan.slice(1)} selected and saved on this device. No payment is processed in this demo.`;
+        button.textContent = `Selected ✓`;
+    }
+
+    function renderCommunityFeed() {
+        const posts = readLocal("nextLevelCommunityPosts", []);
+        document.getElementById("community-feed").innerHTML = posts.length
+            ? posts.map(post => `<div class="feed-item"><strong>${escapeHtml(post.name)}</strong><div>${escapeHtml(post.message)}</div><small>${escapeHtml(post.time)}</small></div>`).join("")
+            : '<p class="discount">No posts yet. Start the conversation.</p>';
+    }
+
+    function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
+    }
+
+    function postCommunityUpdate(event) {
+        event.preventDefault();
+        const name = document.getElementById("community-name").value.trim();
+        const message = document.getElementById("community-message").value.trim();
+        if (!name || !message) return;
+        const posts = readLocal("nextLevelCommunityPosts", []);
+        posts.unshift({ name, message, time: new Date().toLocaleString() });
+        writeLocal("nextLevelCommunityPosts", posts.slice(0, 20));
+        event.target.reset();
+        renderCommunityFeed();
+    }
+
+    window.addEventListener("popstate", () => {
+        const id = location.hash.slice(1);
+        if (document.getElementById(id)?.classList.contains("screen")) showScreen(id, null, true);
+    });
+
+
+    /* ==========================
+       BOOKING SUBMISSION
+    ========================== */
+
+    function submitBooking() {
+
+        const name =
+            document
+                .getElementById("name")
+                .value
+                .trim();
+
+
+        const email =
+            document
+                .getElementById("email")
+                .value
+                .trim();
+
+
+        const date =
+            document
+                .getElementById("date")
+                .value;
+
+        const emailInput = document.getElementById("email");
+
+
+        const notice =
+            document.getElementById(
+                "notice"
+            );
+
+
+        /* VALIDATION */
+
+        if (!name || !email || !emailInput.checkValidity() || !date || date < document.getElementById("date").min) {
+
+            notice.style.display =
+                "block";
+
+            notice.textContent =
+                "Enter your name, a valid email address and a date from today onward.";
+
+            return;
+
+        }
+
+
+        notice.style.display =
+            "none";
+
+
+        /* SAVE BOOKING */
+
+        const booking = {
+
+            name: name,
+
+            email: email,
+
+            date: date,
+
+            experience:
+                document
+                    .getElementById(
+                        "experience"
+                    )
+                    .selectedOptions[0]
+                    .text,
+
+            quantity:
+                document
+                    .getElementById(
+                        "qty"
+                    )
+                    .value,
+
+            quotation:
+                document
+                    .getElementById(
+                        "total"
+                    )
+                    .textContent,
+
+            request:
+                document
+                    .getElementById("request")
+                    .value
+                    .trim()
+
+        };
+
+
+        localStorage.setItem(
+            "nextLevelLastBooking",
+            JSON.stringify(booking)
+        );
+
+
+        /* SHOW SUCCESS */
+
+        showScreen("success");
+
+    }
+
+
+    /* ==========================
+       INITIAL CALCULATION
+    ========================== */
+
+    const today = new Date();
+    today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
+    document.getElementById("date").min = today.toISOString().slice(0, 10);
+    document.querySelectorAll(".screen").forEach(screen => screen.setAttribute("aria-hidden", String(!screen.classList.contains("active"))));
+    if (location.hash && document.getElementById(location.hash.slice(1))?.classList.contains("screen")) showScreen(location.hash.slice(1), null, true);
+    setLeaderboard("gaming", document.querySelector("#leaderboard .chip"));
+    renderCommunityFeed();
+    const savedPlan = readLocal("nextLevelMembership", "");
+    if (savedPlan) {
+        document.querySelectorAll(".plan-card").forEach(card => card.classList.toggle("selected", card.dataset.plan === savedPlan));
+        document.getElementById("plan-status").textContent = `${savedPlan[0].toUpperCase()}${savedPlan.slice(1)} selected and saved on this device. No payment is processed in this demo.`;
+    }
+    const savedSignups = readLocal("nextLevelSignups", []);
+    document.querySelectorAll("[data-signup]").forEach(button => {
+        if (savedSignups.includes(button.dataset.signup)) {
+            button.textContent = "Joined ✓ · Undo";
+            button.setAttribute("aria-pressed", "true");
+        }
+    });
+    calculate();
+
+</script>
+
+</body>
+</html>
