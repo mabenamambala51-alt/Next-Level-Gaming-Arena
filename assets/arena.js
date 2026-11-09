@@ -10,6 +10,7 @@
         ["membership", "⭐", "Members", "pages/membership.html"],
         ["parties", "🎉", "Parties", "pages/parties.html"],
         ["community", "💬", "Community", "pages/community.html"],
+        ["contact", "☎️", "Contact", "pages/contact.html"],
         ["about", "ℹ️", "About", "pages/about.html"],
         ["success", "✅", "Status", "pages/success.html"]
     ];
